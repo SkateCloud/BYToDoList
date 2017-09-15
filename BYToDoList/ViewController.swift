@@ -8,6 +8,7 @@ class ViewController: UITableViewController {
     private lazy var datePicker = UIDatePicker()
     let formatter = DateFormatter()
     var isFirst = true
+    var presspoint = CGPoint()
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -45,6 +46,7 @@ class ViewController: UITableViewController {
         
         if longpressRecognizer.state == .began && isFirst {
             
+            presspoint = longpressRecognizer.location(in: self.tableView)
             datePicker = UIDatePicker(frame: CGRect(x: 0, y: 400, width: 375, height: 162))
             datePicker.datePickerMode = .dateAndTime
             datePicker.minuteInterval = 5
@@ -67,8 +69,6 @@ class ViewController: UITableViewController {
     }
     
     @objc func didSaveTime(_ sender: UIDatePicker) {
-        
-        let presspoint = longpressRecognizer.location(in: self.tableView)
         if let indexpath = tableView.indexPathForRow(at: presspoint){
             if indexpath.row < todoItems.count {
                 todoItems[indexpath.row].time = formatter.string(from: sender.date)
